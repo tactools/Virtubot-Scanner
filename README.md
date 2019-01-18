@@ -49,6 +49,10 @@ Download the github zip folder to your desktop , extract the contents and prepar
 |TemplateNameBears | Decide what template to open for the Bear charts |
 
 
+# First Time
+Collecting the data then running some calculations will take several minutes at start up. Please be patient for the Heatmap to be displayed on the chart. 
+
+
 
 
 
