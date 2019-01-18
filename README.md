@@ -4,6 +4,9 @@
 
 This robot will open a chart and load a template by name so you can deploy your other robots automatically. Think of this tool as a portfolio manager for your robots.
 
+
+![HEAT MAP](https://charts.mql5.com/20/171/btcusdt-m1-genesis-markets-lp.png)
+
 ## Adding the files to your MetaTrader Platform
 Download the github zip folder to your desktop , extract the contents and prepare moving the files to the appropriate directories from the directions below.
 1. Open Metatrader Platform and locate the Navigation Bar on the Top of platform
