@@ -1,6 +1,8 @@
 # Virtu-Scanner
-* Scans all markets within the **MarketWatch** and will open charts automatically based on your search criteria(Gain/Loss percentage).
+* Scans all markets within the **MarketWatch** and open charts automatically based on a search criteria(Gain/Loss percentage).
 *close charts if conditions fall under the minimum value 
+
+This robot will open a chart and load a template by name so you can deploy your other robots automatically. Think of this tool as a portfolio manager for your robots.
 
 ## Adding the files to your MetaTrader Platform
 Download the github zip folder to your desktop , extract the contents and prepare moving the files to the appropriate directories from the directions below.
@@ -8,8 +10,8 @@ Download the github zip folder to your desktop , extract the contents and prepar
 2. Click on **File**
 3. Click on **Open Data Folder** and this will open the file directory where you place the following files
   * Open the **MQL5** folder
-  * Paste the **Include** folder from the github zip folder to replace the **include** folder , Overwrite the files if present
-  * Open the **Experts** folder and place the files from the github zip folder **Virtubot.ex5** 
+  * Open the **include** folder and place the files from the github zip folder **include** 
+  * Open the **Experts** folder and place the file from the github zip folder **"".ex5** 
   * restart the platform (close application and reopen)
   
 ## Platform Setup Guide
