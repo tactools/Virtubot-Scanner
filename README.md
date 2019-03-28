@@ -47,6 +47,7 @@ Download the github zip folder to your desktop , extract the contents and prepar
 |DailyMinGain | Decide how much of a percentage change to consider |
 |DailyMaxGain | Decide how much of a percentage decrease is enough |
 |TemplateNameBears | Decide what template to open for the Bear charts |
+|AdjustRiskExposure | Adjust risk exposure based on number of opened charts (equal exposure per market) |
 
 
 # First Time
