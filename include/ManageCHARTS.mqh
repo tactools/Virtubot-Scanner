@@ -1,10 +1,15 @@
 
 #property copyright "Copyright 2019, Hedgebitcoin"
 #property link      "https://github.com/fx4btc"
-#property version   "2.00"
+#property version   "2.01"
 
 /*
 Save the Chart ids and the chart symbols in individual arrays 
+when chart is opened, save the chartID and mae a special global
+feb 7,2019
+
+Feb 14, 2019
+   bringToFront , loop through charts, change templates every 15 seconds, 
 */
 
 string saveOpenedChartNames  [];
@@ -21,7 +26,7 @@ int load_chart_arrays(){
    return(size);
    
 }
-
+// Check if chart is already opened for symbol
 bool charts_compare_charts(string check_symbol){
   // Load arrays
   load_chart_arrays();
@@ -54,7 +59,7 @@ Pass in symbols you want to delete/close their opened charts
 4 delete the global by chartID 
 */
 
-void charts_chose_chart_all(){
+void charts_close_chart_all(string Host_symbol){
 
    load_chart_arrays();
   
@@ -62,48 +67,58 @@ void charts_chose_chart_all(){
   
   for(int i = 0; i< countcharts; i++){
    
-      string sym = saveOpenedChartNames[i];
-     
-      GlobalVariableDel(sym);
-      
-      Print("Closing close now: print symbol after deleting global : " + sym);
-      
+      // grab the symbol from the selected chart based on its index in the chartarray[]
+      // string sym = saveOpenedChartNames[i];
+      // if we 
+      // if( GlobalVariableCheck(sym) ){
+         // processed
+          // delete the globals daily %+/-
+       //  GlobalVariableDel(sym);
+           // grab the chartID based on the chart index 
       long id = saveOpenedChartIDs[i];
-      
+      // grab the symbol based on the chartID()
       string grab_sym = ChartSymbol(id);
-      
-      if( ChartSymbol(grab_sym) != Symbol() ) {
+      string make = grab_sym+"_"+id;
+      Print(" Trying to close this chart symbol name with chart ID: " + make );
+      // prevent closing the chart that the robot is attached to. 
+       if( grab_sym != Host_symbol && GlobalVariableCheck(make) ) {
       
           if(  !ChartClose(id) ){
             Print(" ERROR WITH CLOSING CHART WITH ID " + saveOpenedChartIDs[i] );
           }else{
              // ok good, now delete global
-             string make = grab_sym+"_"+id;
-             Print(" Print the global variable name to delete: " + make);
-             GlobalVariableDel(make);  
              
-             // find more,
-            //   int count =   GlobalVariablesDeleteAll(NULL,0);
-            //   Print(" Print deleted variables : " +count);   
+             Print("GlobalNameWithChartID being deleted: " + make);
+             // each chart is assigned its on global? Feb 7,2019 
+             GlobalVariableDel(make);         
          }  
-      }
       
+     }
+
+
+     
+   
       
+      // pass in the symbol that you want to close the chart 
+      /*
       if( saveOpenedChartNames[i] != Symbol()  ){
          charts_close_chart(saveOpenedChartNames[i] );
       }
+      */
       
   }
 }
 
-void charts_close_chart(string _symbol ){
+// Look for a chart that matches the symbol 
+   //Close the chart based on symbol 
+void charts_close_chart(string _symbol ,string message){
 
     long thischart = ChartID();
     long first = ChartFirst();
     long next =   ChartNext(first) ;
     
     long lastchart = 0;
-   
+   bool flag = false;
    while(lastchart != next)
      {
       
@@ -112,13 +127,25 @@ void charts_close_chart(string _symbol ){
       next = newchartID;// replace next with latest chart ID
       string currentchartSym =  ChartSymbol(lastchart);
       
-      if( currentchartSym == _symbol){
+      string grabsym_id = currentchartSym + "_"+ next;
+      
+      
+      if( GlobalVariableCheck(grabsym_id) ){
+         Print("charts_close_chart(): found the global variable match ");
+         flag = true;
+      }
+      
+      //
+      if( currentchartSym == _symbol && flag ){
          ChartClose(lastchart);
+         flag = false;
          return;
       }
       
     }
-    Print(" No charts to close ");
+    // list all the charts that would normally close if they were already opened.
+         //chart has already been closed
+    //  Print(_symbol + " || charts_close_chart(): No chart to close:  " + message);
 }
 
 /*
@@ -143,6 +170,8 @@ void charts_open_chart(string _symbol , string template_name , double direction,
      
      // make the global
   
+      GlobalVariableSet(_symbol +"_"+ IntegerToString(chart_id,0,0) ,0);
+  
       // if not found, return now
       if(chart_id==0)
       {
@@ -165,6 +194,13 @@ void charts_open_chart(string _symbol , string template_name , double direction,
 
 
 
+/*
+// Create the Chart Arrays
+   // ChartNames
+   // ChartIDs 
+   saveOpenedChartNames,currentSymbolsTotal);
+   saveOpenedChartIDs,currentSymbolsTotal);
+*/
 void charts_manage_chart_id_symbol(){
    
     int currentSymbolsTotal=SymbolsTotal(true);
@@ -201,5 +237,28 @@ void charts_manage_chart_id_symbol(){
     ArrayResize(saveOpenedChartNames,countCharts);// saves the symbols of all the openeded charts 
     ArrayResize(saveOpenedChartIDs,countCharts);
    
+}
+
+// loop through all open charts 
+bool charts_bringToFront(string check_symbol){
+  
+    int countCharts  = 0;
+    long thischart = ChartID();
+    long first = ChartFirst();
+    long next =   ChartNext(first) ;
+    long lastchart = 0;
+   
+   while(lastchart != next)
+     {
+      countCharts++;
+      lastchart = next;
+      long newchartID =   ChartNext(next);
+     
+      Print("Loop Charts counter:" + countCharts);
+      Sleep(30000);
+    //  string currentchartSym =  ChartSymbol(lastchart);
+     
+    }
+   return(false);
 }
 
